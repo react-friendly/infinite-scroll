@@ -1,22 +1,22 @@
-# 📜 react-sleek-scroll
+# 📜 react-friendly/infinite-scroll
 
 A sleek, generic, and fully controlled infinite scroll component for React — built with TypeScript, imperatively controllable, and customizable to the last pixel.
 
 ## 🔧 Installation
 ``bash
-npm install react-sleek-scroll
+npm install @react-friendly/infinite-scroll
 ``
 
 or
 
 ``bash
-yarn add react-sleek-scroll
+yarn add @react-friendly/infinite-scroll
 ``
 
 ## 🚀 Quick Example
 ``tsx
 import React, { useRef } from 'react';
-import InfiniteScroll, { InfiniteScrollHandle } from 'react-sleek-scroll';
+import InfiniteScroll, { InfiniteScrollHandle } from '@react-friendly/infinite-scroll';
 
 interface Post {
   id: number;
