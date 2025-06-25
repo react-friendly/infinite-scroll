@@ -3,18 +3,20 @@
 A sleek, generic, and fully controlled infinite scroll component for React — built with TypeScript, imperatively controllable, and customizable to the last pixel.
 
 ## 🔧 Installation
-``bash
+
+```sh
 npm install @react-friendly/infinite-scroll
-``
+```
 
 or
 
-``bash
+```sh
 yarn add @react-friendly/infinite-scroll
-``
+```
 
 ## 🚀 Quick Example
-``tsx
+
+```tsx
 import React, { useRef } from 'react';
 import InfiniteScroll, { InfiniteScrollHandle } from '@react-friendly/infinite-scroll';
 
@@ -41,7 +43,7 @@ function PostList() {
     />
   );
 }
-``
+```
 
 ## ⚙️ Props
 
@@ -59,7 +61,7 @@ className	string	Custom class name.
 
 Access the component's internal logic via ref:
 
-``tsx
+```tsx
 const ref = useRef<InfiniteScrollHandle<T>>(null);
 Method	Description
 reload()	Reloads the list from scratch.
@@ -67,12 +69,11 @@ updateItem(item, predicate)	Updates a matching item using your predicate logic.
 removeItem(predicate)	Removes an item based on a predicate.
 getItems()	Returns the currently loaded list of items.
 addItem(newItem)	Appends a new item manually.
-``
+```
 
 ## 🔄 Reverse Mode Example (Chat UI)
 
-``tsx
-
+```tsx
 <InfiniteScroll<Message>
   ref={scrollRef}
   limit={20}
@@ -84,23 +85,23 @@ addItem(newItem)	Appends a new item manually.
     </div>
   )}
 />
-``
+```
 
 ## 🧱 ResponseData<T>
 
 The loadItems function must return the following structure:
 
-``ts
+```ts
 interface ResponseData<T> {
   items: T[];
   total: number;  // total number of items on the server
   offset: number; // current offset (usually passed in the request)
 }
-``
+```
 
 ##🧪 Test with Mock API
 
-``tsx
+```tsx
 const mockLoad = async (offset: number): Promise<ResponseData<number>> => {
   await new Promise(r => setTimeout(r, 500)); // simulate latency
   return {
@@ -109,9 +110,10 @@ const mockLoad = async (offset: number): Promise<ResponseData<number>> => {
     offset,
   };
 };
-``
+```
 
 ## 💡 Tips
+
 Use reverse mode for chat interfaces with flexDirection: column-reverse.
 
 The scroll container automatically observes a sentinel element for triggering loads.
