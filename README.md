@@ -47,15 +47,16 @@ function PostList() {
 
 ## ⚙️ Props
 
-Prop	Type	Description
-loadItems	(offset: number) => Promise<ResponseData<T>>	Async function to fetch more items.
-renderItem	(item: T) => React.ReactNode	Render logic for each item.
-limit	number	Item batch size per request (used internally in loadItems).
-loadingComponent	React.ReactNode	Optional loading indicator.
-errorComponent	React.ReactNode	Optional error fallback UI.
-reverse	boolean	If true, renders items in reverse scroll (e.g., chat apps).
-style	React.CSSProperties	Custom styles for scroll container.
-className	string	Custom class name.
+| Prop               | Type                                              | Description |
+|--------------------|---------------------------------------------------|-------------|
+| `loadItems`        | `(offset: number) => Promise<ResponseData<T>>`   | Async function to fetch more items. |
+| `renderItem`       | `(item: T) => React.ReactNode`                   | Render logic for each item. |
+| `limit`            | `number`                                         | Item batch size per request (used internally in `loadItems`). |
+| `loadingComponent` | `React.ReactNode`                                | Optional loading indicator. |
+| `errorComponent`   | `React.ReactNode`                                | Optional error fallback UI. |
+| `reverse`          | `boolean`                                        | If `true`, renders items in reverse scroll (e.g., chat apps). |
+| `style`            | `React.CSSProperties`                            | Custom styles for scroll container. |
+| `className`        | `string`                                         | Custom class name. |
 
 ## 🔁 Ref API (InfiniteScrollHandle<T>)
 
@@ -63,13 +64,15 @@ Access the component's internal logic via ref:
 
 ```tsx
 const ref = useRef<InfiniteScrollHandle<T>>(null);
-Method	Description
-reload()	Reloads the list from scratch.
-updateItem(item, predicate)	Updates a matching item using your predicate logic.
-removeItem(predicate)	Removes an item based on a predicate.
-getItems()	Returns the currently loaded list of items.
-addItem(newItem)	Appends a new item manually.
 ```
+
+| Method | Description |
+| -------- | --------- |
+| reload() | Reloads the list from scratch. |
+| updateItem(item, predicate) | Updates a matching item using your predicate logic. |
+| removeItem(predicate) | Removes an item based on a predicate. |
+| getItems() | Returns the currently loaded list of items. |
+| addItem(newItem) | Appends a new item manually. |
 
 ## 🔄 Reverse Mode Example (Chat UI)
 
@@ -99,7 +102,7 @@ interface ResponseData<T> {
 }
 ```
 
-##🧪 Test with Mock API
+## 🧪 Test with Mock API
 
 ```tsx
 const mockLoad = async (offset: number): Promise<ResponseData<number>> => {
