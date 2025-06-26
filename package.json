@@ -1,6 +1,6 @@
 {
     "name": "@react-friendly/infinite-scroll",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "A sleek infinite scroll React component",
     "main": "dist/index.cjs.js",
     "module": "dist/index.js",
