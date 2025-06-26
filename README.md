@@ -93,7 +93,6 @@ Your API call stays clean, and the component still receives the correct items, t
 |--------------------|---------------------------------------------------|-------------|
 | `loadItems`        | `(offset: number) => Promise<ResponseData<T>>`   | Async function to fetch more items. |
 | `renderItem`       | `(item: T) => React.ReactNode`                   | Render logic for each item. |
-| `limit`            | `number`                                         | Item batch size per request (used internally in `loadItems`). |
 | `loadingComponent` | `React.ReactNode`                                | Optional loading indicator. |
 | `errorComponent`   | `React.ReactNode`                                | Optional error fallback UI. |
 | `reverse`          | `boolean`                                        | If `true`, renders items in reverse scroll (e.g., chat apps). |
