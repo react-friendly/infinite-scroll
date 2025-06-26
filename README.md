@@ -39,8 +39,7 @@ function PostList() {
     };
 
     return (
-        <InfiniteScroll<Post>
-            limit={10}
+        <InfiniteScroll
             loadItems={fetchPosts}
             renderItem={(item) => <div key={item.id}>{item.title}</div>}
         />
@@ -79,7 +78,6 @@ function PostList() {
 
     return (
         <InfiniteScroll
-            limit={10}
             loadItems={fetchPosts}
             renderItem={(item) => <div key={item.id}>{item.title}</div>}
         />
@@ -121,9 +119,7 @@ const ref = useRef<InfiniteScrollHandle<T>>(null);
 ## 🔄 Reverse Mode Example (Chat UI)
 
 ```tsx
-<InfiniteScroll<Message>
-    ref={scrollRef}
-    limit={20}
+<InfiniteScroll
     reverse
     loadItems={loadMessages}
     renderItem={(msg) => (
