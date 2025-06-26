@@ -23,7 +23,6 @@ interface Props<T> {
     loadingComponent?: React.ReactNode;
     errorComponent?: React.ReactNode;
     reverse?: boolean;
-    limit: number;
     style?: React.CSSProperties;
     className?: string;
 }
