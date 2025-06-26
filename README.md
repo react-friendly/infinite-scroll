@@ -170,5 +170,12 @@ You can debounce or throttle loadItems if needed (though the built-in logic prev
 
 Ideal for dashboards, timelines, chats, feeds, etc.
 
+## 🧑‍💻 Contributors
+
+| Photo | Name | Links |
+| ----- | ---- | ------ |
+| <img src="https://avatars.githubusercontent.com/u/28657322?v=4" width="80" alt="Gabriel" /> | Gabriel | [GitHub](https://github.com/gabrielrfmendes) |
+| <img src="https://avatars.githubusercontent.com/u/69215425?v=4" width="80" alt="Tarsis" /> | Tarsis | [GitHub](https://github.com/tarsislimadev) |
+
 ## 🧾 License
-[MIT](./LICENSE) © [Gabriel](https://github.com/gabrielrfmendes) and [Tarsis](https://github.com/tarsislimadev)
+[MIT](./LICENSE) © react-friendly
