@@ -2,6 +2,11 @@
 
 A sleek, generic, and fully controlled infinite scroll component for React — built with TypeScript, imperatively controllable, and customizable to the last pixel.
 
+![npm version](https://img.shields.io/npm/v/@react-friendly/infinite-scroll)
+![license](https://img.shields.io/npm/l/@react-friendly/infinite-scroll)
+![types](https://img.shields.io/npm/types/@react-friendly/infinite-scroll)
+![npm downloads](https://img.shields.io/npm/dw/@react-friendly/infinite-scroll)
+
 ## 🔧 Installation
 
 ```sh
@@ -17,33 +22,72 @@ yarn add @react-friendly/infinite-scroll
 ## 🚀 Quick Example
 
 ```tsx
-import React, { useRef } from 'react';
-import InfiniteScroll, { InfiniteScrollHandle } from '@react-friendly/infinite-scroll';
+import React from 'react';
+import InfiniteScroll from '@react-friendly/infinite-scroll';
 
 interface Post {
-  id: number;
-  title: string;
+    id: number;
+    title: string;
 }
 
 function PostList() {
-  const scrollRef = useRef<InfiniteScrollHandle<Post>>(null);
+    const fetchPosts = async (offset: number): Promise<{ items: Post[], total: number, offset: number }> => {
+        const response = await fetch(`/api/posts?offset=${offset}`);
+        const data = await response.json();
 
-  const fetchPosts = async (offset: number): Promise<{ items: Post[], total: number, offset: number }> => {
-    const res = await fetch(`/api/posts?offset=${offset}`);
-    const data = await res.json();
-    return data;
-  };
+        return data;
+    };
 
-  return (
-    <InfiniteScroll<Post>
-      ref={scrollRef}
-      limit={10}
-      loadItems={fetchPosts}
-      renderItem={(item) => <div key={item.id}>{item.title}</div>}
-    />
-  );
+    return (
+        <InfiniteScroll<Post>
+            limit={10}
+            loadItems={fetchPosts}
+            renderItem={(item) => <div key={item.id}>{item.title}</div>}
+        />
+    );
 }
 ```
+
+## 📘 Using `page` & `limit` Pagination APIs
+
+If your API uses `page`, `limit`, and `total` instead of `offset`, no problem — just adapt the request logic accordingly.
+
+```tsx
+import React from 'react';
+import InfiniteScroll from '@react-friendly/infinite-scroll';
+
+interface Post {
+    id: number;
+    title: string;
+}
+
+function PostList() {
+    const fetchPosts = async (offset: number): Promise<{ items: Post[]; total: number; offset: number }> => {
+        const limit = 10;
+        // Converts offset-based pagination to page number (1-based index)
+        const page = Math.floor(offset / limit) + 1;
+
+        const response = await fetch(`/api/posts?page=${page}&limit=${limit}`);
+        const data = await response.json();
+
+        return {
+            items: data.data,
+            total: data.total,
+            offset: offset,
+        };
+    };
+
+    return (
+        <InfiniteScroll
+            limit={10}
+            loadItems={fetchPosts}
+            renderItem={(item) => <div key={item.id}>{item.title}</div>}
+        />
+    );
+}
+```
+
+Your API call stays clean, and the component still receives the correct items, total, and original offset. Seamless integration, regardless of backend pagination style.
 
 ## ⚙️ Props
 
@@ -68,25 +112,25 @@ const ref = useRef<InfiniteScrollHandle<T>>(null);
 
 | Method | Description |
 | -------- | --------- |
-| reload() | Reloads the list from scratch. |
-| updateItem(item, predicate) | Updates a matching item using your predicate logic. |
-| removeItem(predicate) | Removes an item based on a predicate. |
-| getItems() | Returns the currently loaded list of items. |
-| addItem(newItem) | Appends a new item manually. |
+| `reload()` | Reloads the list from scratch. |
+| `updateItem(item, predicate)` | Updates a matching item using your predicate logic. |
+| `removeItem(predicate)` | Removes an item based on a predicate. |
+| `getItems()` | Returns the currently loaded list of items. |
+| `addItem(newItem)` | Appends a new item manually. |
 
 ## 🔄 Reverse Mode Example (Chat UI)
 
 ```tsx
 <InfiniteScroll<Message>
-  ref={scrollRef}
-  limit={20}
-  reverse
-  loadItems={loadMessages}
-  renderItem={(msg) => (
-    <div key={msg.id}>
-      <b>{msg.user}</b>: {msg.text}
-    </div>
-  )}
+    ref={scrollRef}
+    limit={20}
+    reverse
+    loadItems={loadMessages}
+    renderItem={(msg) => (
+        <div key={msg.id}>
+            <b>{msg.user}</b>: {msg.text}
+        </div>
+    )}
 />
 ```
 
@@ -96,9 +140,9 @@ The loadItems function must return the following structure:
 
 ```ts
 interface ResponseData<T> {
-  items: T[];
-  total: number;  // total number of items on the server
-  offset: number; // current offset (usually passed in the request)
+    items: T[];
+    total: number;  // total number of items on the server
+    offset: number; // current offset (usually passed in the request)
 }
 ```
 
@@ -106,12 +150,13 @@ interface ResponseData<T> {
 
 ```tsx
 const mockLoad = async (offset: number): Promise<ResponseData<number>> => {
-  await new Promise(r => setTimeout(r, 500)); // simulate latency
-  return {
-    items: Array.from({ length: 10 }, (_, i) => offset + i + 1),
-    total: 100,
-    offset,
-  };
+    await new Promise(r => setTimeout(r, 500)); // simulate latency
+    
+    return {
+        items: Array.from({ length: 10 }, (_, i) => offset + i + 1),
+        total: 100,
+        offset,
+    };
 };
 ```
 
@@ -126,4 +171,4 @@ You can debounce or throttle loadItems if needed (though the built-in logic prev
 Ideal for dashboards, timelines, chats, feeds, etc.
 
 ## 🧾 License
-[MIT](./LICENSE) © Gabriel and Tarsis
+[MIT](./LICENSE) © [Gabriel](https://github.com/gabrielrfmendes) and [Tarsis](https://github.com/tarsislimadev)
