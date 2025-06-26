@@ -37,5 +37,24 @@
         "@types/react": "^19.1.8",
         "rollup": "^4.44.0",
         "typescript": "^5.8.3"
-    }
+    },
+    "keywords": [
+        "react",
+        "infinite scroll",
+        "react infinite scroll",
+        "infinite scrolling",
+        "scroll list",
+        "virtual scroll",
+        "pagination",
+        "lazy loading",
+        "intersection observer",
+        "react component",
+        "typescript",
+        "chat scroll",
+        "reverse scroll",
+        "scroll hook",
+        "load more",
+        "infinite loader",
+        "scroll container"
+    ]
 }
