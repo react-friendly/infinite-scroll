@@ -39,8 +39,7 @@ function PostList() {
     };
 
     return (
-        <InfiniteScroll<Post>
-            limit={10}
+        <InfiniteScroll
             loadItems={fetchPosts}
             renderItem={(item) => <div key={item.id}>{item.title}</div>}
         />
@@ -79,7 +78,6 @@ function PostList() {
 
     return (
         <InfiniteScroll
-            limit={10}
             loadItems={fetchPosts}
             renderItem={(item) => <div key={item.id}>{item.title}</div>}
         />
@@ -95,7 +93,6 @@ Your API call stays clean, and the component still receives the correct items, t
 |--------------------|---------------------------------------------------|-------------|
 | `loadItems`        | `(offset: number) => Promise<ResponseData<T>>`   | Async function to fetch more items. |
 | `renderItem`       | `(item: T) => React.ReactNode`                   | Render logic for each item. |
-| `limit`            | `number`                                         | Item batch size per request (used internally in `loadItems`). |
 | `loadingComponent` | `React.ReactNode`                                | Optional loading indicator. |
 | `errorComponent`   | `React.ReactNode`                                | Optional error fallback UI. |
 | `reverse`          | `boolean`                                        | If `true`, renders items in reverse scroll (e.g., chat apps). |
@@ -121,9 +118,7 @@ const ref = useRef<InfiniteScrollHandle<T>>(null);
 ## 🔄 Reverse Mode Example (Chat UI)
 
 ```tsx
-<InfiniteScroll<Message>
-    ref={scrollRef}
-    limit={20}
+<InfiniteScroll
     reverse
     loadItems={loadMessages}
     renderItem={(msg) => (
