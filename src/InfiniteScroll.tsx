@@ -3,7 +3,7 @@ import React, {
     forwardRef, useImperativeHandle
 } from 'react';
 
-interface ResponseData<T> {
+export interface ResponseData<T> {
     items: T[];
     total: number;
     offset: number;
@@ -14,7 +14,8 @@ export interface InfiniteScrollHandle<T> {
     updateItem: (updatedItem: T, predicate: (item: T) => boolean) => void;
     removeItem: (predicate: (item: T) => boolean) => void;
     getItems: () => T[];
-    addItem: (newItem: T) => void;
+    push: (newItem: T) => void;
+    unshift: (newItem: T) => void;
 }
 
 interface Props<T> {
@@ -22,9 +23,11 @@ interface Props<T> {
     renderItem: (item: T) => React.ReactNode;
     loadingComponent?: React.ReactNode;
     errorComponent?: React.ReactNode;
+    emptyComponent?: React.ReactNode;
     reverse?: boolean;
     style?: React.CSSProperties;
     className?: string;
+    keyExtractor?: (item: T, index: number) => string | number;
 }
 
 function InfiniteScrollInner<T>(
@@ -34,6 +37,7 @@ function InfiniteScrollInner<T>(
     const [items, setItems] = useState<T[]>([]);
     const [total, setTotal] = useState(0);
     const [isServerOut, setIsServerOut] = useState(false);
+    const [initialLoadComplete, setInitialLoadComplete] = useState(false);
     const scrollRef = useRef<HTMLDivElement>(null);
     const sentinelaRef = useRef<HTMLDivElement>(null);
     const isLoadingRef = useRef(false);
@@ -54,12 +58,14 @@ function InfiniteScrollInner<T>(
             setIsServerOut(true);
         } finally {
             isLoadingRef.current = false;
+            setInitialLoadComplete(true);
         }
     }, [hasMoreItems, items.length, props]);
 
     const resetAndReload = useCallback(async () => {
         isLoadingRef.current = true;
         setIsServerOut(false);
+        setInitialLoadComplete(false);
         try {
             const responseData = await props.loadItems(0);
             setItems(responseData.items);
@@ -69,6 +75,7 @@ function InfiniteScrollInner<T>(
             setIsServerOut(true);
         } finally {
             isLoadingRef.current = false;
+            setInitialLoadComplete(true);
         }
     }, [props]);
 
@@ -82,11 +89,25 @@ function InfiniteScrollInner<T>(
             setTotal(prev => prev - 1);
         },
         getItems: () => items,
-        addItem: (newItem) => {
+        push: (newItem) => {
             setItems(prev => [...prev, newItem]);
+            setTotal(prev => prev + 1);
+        },
+        unshift: (newItem) => {
+            setItems(prev => [newItem, ...prev]);
             setTotal(prev => prev + 1);
         }
     }));
+
+    useEffect(() => {
+        if (process.env.NODE_ENV === 'development' && !props.keyExtractor) {
+            console.warn(
+                '[InfiniteScroll] Warning: "keyExtractor" prop is missing.\n' +
+                'Using array index as key may lead to rendering issues when the list updates dynamically.\n' +
+                'It is strongly recommended to provide a stable unique key for each item.'
+            );
+        }
+    }, []);
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -115,6 +136,7 @@ function InfiniteScrollInner<T>(
 
     const defaultLoading = <div style={{ padding: 16, textAlign: 'center', color: '#999' }}>Loading more...</div>;
     const defaultError = <div style={{ padding: 16, textAlign: 'center', color: 'red' }}>Error loading data.</div>;
+    const defaultEmpty = <div style={{ padding: 16, textAlign: 'center', color: '#999' }}>No items found</div>;
 
     return (
         <div
@@ -130,13 +152,21 @@ function InfiniteScrollInner<T>(
             className={props.className}
         >
             {props.reverse && <div ref={sentinelaRef} />}
-            {items.map((item, index) => (
-                <React.Fragment key={index}>
-                    {props.renderItem(item)}
-                </React.Fragment>
-            ))}
+
+            {initialLoadComplete && items.length === 0 ? (
+                props.emptyComponent ?? defaultEmpty
+            ) : items.map((item, index) => {
+                const key = props.keyExtractor?.(item, index) ?? index;
+                return (
+                    <React.Fragment key={key}>
+                        {props.renderItem(item)}
+                    </React.Fragment>
+                );
+            })}
+
             {!props.reverse && <div ref={sentinelaRef} />}
-            {hasMoreItems && (props.loadingComponent ?? defaultLoading)}
+
+            {!initialLoadComplete && hasMoreItems && (props.loadingComponent ?? defaultLoading)}
             {isServerOut && (props.errorComponent ?? defaultError)}
         </div>
     );
