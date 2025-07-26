@@ -1,6 +1,6 @@
 {
     "name": "@react-friendly/infinite-scroll",
-    "version": "1.0.2",
+    "version": "2.1.0",
     "description": "A sleek infinite scroll React component",
     "main": "dist/index.cjs.js",
     "module": "dist/index.js",
@@ -34,6 +34,7 @@
         "@rollup/plugin-commonjs": "^28.0.6",
         "@rollup/plugin-node-resolve": "^16.0.1",
         "@rollup/plugin-typescript": "^12.1.3",
+        "@types/node": "^24.0.13",
         "@types/react": "^19.1.8",
         "rollup": "^4.44.0",
         "typescript": "^5.8.3"
