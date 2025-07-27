@@ -38,6 +38,7 @@ function InfiniteScrollInner<T>(
     const [total, setTotal] = useState(0);
     const [isServerOut, setIsServerOut] = useState(false);
     const [initialLoadComplete, setInitialLoadComplete] = useState(false);
+    const [hasUserScrolledInReverse, setHasUserScrolledInReverse] = useState(false);
     const scrollRef = useRef<HTMLDivElement>(null);
     const sentinelaStartRef = useRef<HTMLDivElement>(null);
     const sentinelaEndRef = useRef<HTMLDivElement>(null);
@@ -83,6 +84,7 @@ function InfiniteScrollInner<T>(
         isLoadingRef.current = true;
         setIsServerOut(false);
         setInitialLoadComplete(false);
+        setHasUserScrolledInReverse(false); // Reset scroll flag on reload
         try {
             const responseData = await props.loadItems(0);
 
@@ -129,6 +131,10 @@ function InfiniteScrollInner<T>(
         const observer = new IntersectionObserver(
             ([entry]) => {
                 if (entry.isIntersecting) {
+                    // In reverse mode, only load items if user has scrolled or it's the initial load
+                    if (props.reverse && !hasUserScrolledInReverse && initialLoadComplete) {
+                        return;
+                    }
                     loadMoreItems();
                 }
             },
@@ -144,11 +150,30 @@ function InfiniteScrollInner<T>(
         return () => {
             if (sentinel) observer.unobserve(sentinel);
         };
-    }, [loadMoreItems, props.reverse]);
+    }, [loadMoreItems, props.reverse, hasUserScrolledInReverse, initialLoadComplete]);
 
     useEffect(() => {
         resetAndReload();
     }, []);
+
+    // Add scroll event listener for reverse mode to track user interaction
+    useEffect(() => {
+        if (!props.reverse) return;
+
+        const handleScroll = () => {
+            if (!hasUserScrolledInReverse) {
+                setHasUserScrolledInReverse(true);
+            }
+        };
+
+        const scrollElement = scrollRef.current;
+        if (scrollElement) {
+            scrollElement.addEventListener('scroll', handleScroll, { passive: true });
+            return () => {
+                scrollElement.removeEventListener('scroll', handleScroll);
+            };
+        }
+    }, [props.reverse, hasUserScrolledInReverse]);
 
     const defaultLoading = <div style={{ padding: 16, textAlign: 'center', color: '#999' }}>Loading more...</div>;
     const defaultError = <div style={{ padding: 16, textAlign: 'center', color: 'red' }}>Error loading data.</div>;
