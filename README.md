@@ -110,10 +110,11 @@ const ref = useRef<InfiniteScrollHandle<T>>(null);
 | Method | Description |
 | -------- | --------- |
 | `reload()` | Reloads the list from scratch. |
-| `updateItem(item, predicate)` | Updates a matching item using your predicate logic. |
-| `removeItem(predicate)` | Removes an item based on a predicate. |
+| `replace(predicate, iteToReplace)` | Updates a matching item using your predicate logic. |
+| `remove(predicate)` | Removes an item based on a predicate. |
 | `getItems()` | Returns the currently loaded list of items. |
-| `addItem(newItem)` | Appends a new item manually. |
+| `push(newItem)` | Appends a new item manually and updates the total count. |
+| `unshift(newItem)` | Prepends a new item to the beginning of the list and updates the total count. |
 
 ## 🔄 Reverse Mode Example (Chat UI)
 
