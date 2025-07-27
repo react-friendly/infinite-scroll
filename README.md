@@ -93,9 +93,7 @@ Your API call stays clean, and the component still receives the correct items, t
 |--------------------|---------------------------------------------------|-------------|
 | `loadItems`        | `(offset: number) => Promise<ResponseData<T>>`   | Async function to fetch more items. |
 | `renderItem`       | `(item: T) => React.ReactNode`                   | Render logic for each item. |
-| `keyExtractor`     | `(item: T, index: number) => string | number`    | Optional, but important key extractor. |
 | `loadingComponent` | `React.ReactNode`                                | Optional loading indicator. |
-| `emptyComponent`   | `React.ReactNode`                                | Optional empty indicator. |
 | `errorComponent`   | `React.ReactNode`                                | Optional error fallback UI. |
 | `reverse`          | `boolean`                                        | If `true`, renders items in reverse scroll (e.g., chat apps). |
 | `style`            | `React.CSSProperties`                            | Custom styles for scroll container. |
@@ -112,11 +110,11 @@ const ref = useRef<InfiniteScrollHandle<T>>(null);
 | Method | Description |
 | -------- | --------- |
 | `reload()` | Reloads the list from scratch. |
-| `updateItem(item, predicate)` | Updates a matching item using your predicate logic. |
-| `removeItem(predicate)` | Removes an item based on a predicate. |
+| `replace(predicate, itemToReplace)` | Updates a matching item using your predicate logic. |
+| `remove(predicate)` | Removes an item based on a predicate. |
 | `getItems()` | Returns the currently loaded list of items. |
-| `push(newItem)` | Appends a new item manually. |
-| `unshift(newItem)` | Prepends a new item manually to the beginning of the list. |
+| `push(newItem)` | Appends a new item manually and updates the total count. |
+| `unshift(newItem)` | Prepends a new item to the beginning of the list and updates the total count. |
 
 ## 🔄 Reverse Mode Example (Chat UI)
 
