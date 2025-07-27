@@ -12,7 +12,11 @@
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
         "isolatedModules": true,
-        "noEmit": false
+        "noEmit": false,
+        "types": [
+            "node",
+            "react"
+        ]
     },
     "include": [
         "src"
