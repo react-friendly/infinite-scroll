@@ -110,7 +110,7 @@ const ref = useRef<InfiniteScrollHandle<T>>(null);
 | Method | Description |
 | -------- | --------- |
 | `reload()` | Reloads the list from scratch. |
-| `replace(predicate, iteToReplace)` | Updates a matching item using your predicate logic. |
+| `replace(predicate, itemToReplace)` | Updates a matching item using your predicate logic. |
 | `remove(predicate)` | Removes an item based on a predicate. |
 | `getItems()` | Returns the currently loaded list of items. |
 | `push(newItem)` | Appends a new item manually and updates the total count. |
